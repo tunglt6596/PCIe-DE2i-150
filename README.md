@@ -6,7 +6,7 @@
 
 ## Getting Started
 
-* PCIE_Display: Quartus project, I've used 17.1 version to build it, you can use both Lite/Standard Edition version without any problem. Note: ip_repo sub-folder contains my convolution IP Core, verilog HDL code.
+* PCIE_Display: Quartus project, I've used 17.1 version to build it, you can use both Lite/Standard Edition versions without any problem. Note: ip_repo sub-folder contains my convolution IP Core, verilog HDL code.
 * PCIE_Driver: PCIe device driver to control SG-DMA, Frame Reader...
 
 ### Prerequisites
