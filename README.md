@@ -66,6 +66,7 @@ $ sudo ./app
 ## Running the tests
 
 * Change states of SWs 0 to 7 to see changes on screen. If all 7 SWs are 0, the original video is displayed. Else:
+```
 0000001: Gaussian filter, sigma equals 1.
 0000010: Gaussian filter, sigma equals 2.
 0000100: Sobel filter, x axis.
@@ -73,6 +74,7 @@ $ sudo ./app
 0010000: Prewitt filter, x axis.
 0100000: Prewitt filter, y axis.
 1000000: Mean filter.
+```
 
 ## Deployment
 
