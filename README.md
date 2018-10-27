@@ -66,17 +66,17 @@ $ sudo ./app
 ## Running the tests
 
 * Change states of SWs 0 to 7 to see changes on screen. If all 7 SWs are 0, the original video is displayed. Else:
-- 0000001: Gaussian filter, sigma equals 1.
-- 0000010: Gaussian filter, sigma equals 2.
-- 0000100: Sobel filter, x axis.
-- 0001000: Sobel filter, y axis.
-- 0010000: Prewitt filter, x axis.
-- 0100000: Prewitt filter, y axis.
-- 1000000: Mean filter.
+0000001: Gaussian filter, sigma equals 1.
+0000010: Gaussian filter, sigma equals 2.
+0000100: Sobel filter, x axis.
+0001000: Sobel filter, y axis.
+0010000: Prewitt filter, x axis.
+0100000: Prewitt filter, y axis.
+1000000: Mean filter.
 
 ## Deployment
 
-Some videos demo:
+* Some videos demo:
 
 ```
 https://www.youtube.com/watch?v=xrvb_FH-_Zc
@@ -92,7 +92,7 @@ https://www.youtube.com/watch?v=bKAL7i8swpI
 
 ## Versioning
 
-1.0
+* 1.0
 
 ## Authors
 
@@ -100,7 +100,7 @@ https://www.youtube.com/watch?v=bKAL7i8swpI
 
 ## License
 
-This project is not licenced.
+* This project is not licenced.
 
 ## Acknowledgments
 
