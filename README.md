@@ -70,7 +70,7 @@ $ sudo ./app
  
 ## Running the tests
 
-* Change states of SWs 0 to 6 to see changes on screen. If all 7 SWs are 0, the original video is displayed. Else:
+* Change states of SWs 0 to 6 to see results on screen. If all 7 SWs are 0, the original video is displayed. Else:
 ```
 0000001: Gaussian filter, sigma equals 1.
 0000010: Gaussian filter, sigma equals 2.
