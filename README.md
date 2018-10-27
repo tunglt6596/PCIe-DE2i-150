@@ -42,6 +42,11 @@ $ make
 $ cd app
 $ make
 ```
+* You can run matlab file in Make Video folder to get input video, or you can download input video directly here:
+
+```
+https://drive.google.com/drive/folders/1-CMqv4Z6cPjSZiaYw8YN0BKHNSoodPCP
+```
 
 ### Installing
 
@@ -98,7 +103,7 @@ https://www.youtube.com/watch?v=bKAL7i8swpI
 
 ## Authors
 
-* Student Tung Le Thanh and lecturer Tien Nguyen Duc. 
+* Student Thanh Tung Le and lecturer Duc Tien Nguyen. 
 
 ## License
 
@@ -106,5 +111,5 @@ https://www.youtube.com/watch?v=bKAL7i8swpI
 
 ## Acknowledgments
 
-* MsC Tien Nguyen Duc, who supervised and supported me in this project.
+* MsC Duc Tien Nguyen, who supervised and supported me in this project.
 
