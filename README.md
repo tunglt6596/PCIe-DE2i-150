@@ -11,10 +11,10 @@
 
 ### Prerequisites
 
-* I use Ubuntu 14.04 for DE2i-150. Kernel version is 4.4.0. You can check with command:
+* I use Ubuntu 14.04 for DE2i-150. Kernel version is 4.4.0. You can check with this command:
 
 ```
-uname -r
+$ uname -r
 ``` 
 
 * Please add this two options into grub booting commands:
@@ -32,34 +32,34 @@ GRUB_CMDLINE_LINUX="vmalloc=512MB intel_iommu=off"
 * If you're using another kernel version, maybe you need to modify device driver. To build device devicer:
 
 ```
-cd driver
-make
+$ cd driver
+$ make
 ```
 
 * To build application:
 
 ```
-cd app
-make
+$ cd app
+$ make
 ```
 
 ### Installing
 
 * Run quick_start.sh with sudo permission to install device driver and create device file automatically.
 ```
-sudo ./quick_start.sh
+$ sudo ./quick_start.sh
 ```
 * Or you can install device driver and create device file manually.
 ```
-cd driver
-sudo insmod altera_driver.ko
-sudo mknod /dev/de2i150_altera c 91 1
-sudo chmod 777 /dev/de2i150_altera
+$ cd driver
+$ sudo insmod altera_driver.ko
+$ sudo mknod /dev/de2i150_altera c 91 1
+$ sudo chmod 777 /dev/de2i150_altera
 ```
 * Go to PCIE_Driver/app, run app.
 ```
-cd app
-sudo ./app
+$ cd app
+$ sudo ./app
 ```
 * Connect screen to VGA FPGA port, you'll see the results.
  
