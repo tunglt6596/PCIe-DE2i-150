@@ -1,0 +1,213 @@
+`timescale 1ns / 1ps
+
+module conv
+#(
+    parameter integer IMAGE_HEIGHT = 30,
+    parameter integer IMAGE_WIDTH  = 30,
+    
+    parameter integer KERNEL_SIZE  = 3,
+    
+    parameter integer FP_WORD_LENGTH = 11,
+    parameter integer FP_FRAC_LENGTH = 0
+	
+)
+(	
+    input wire clk,
+    input wire reset,
+    input wire [7:0] pxl_in,
+    output wire [23:0] pxl_out,
+    output wire ready_in,
+	input wire valid_in,
+	output wire valid_out,
+	output wire sop_out,
+	output wire eop_out
+);
+	
+    wire [FP_WORD_LENGTH-1 : 0] kernel_00;
+    wire [FP_WORD_LENGTH-1 : 0] kernel_01;
+    wire [FP_WORD_LENGTH-1 : 0] kernel_02;
+    wire [FP_WORD_LENGTH-1 : 0] kernel_10;
+    wire [FP_WORD_LENGTH-1 : 0] kernel_11;
+    wire [FP_WORD_LENGTH-1 : 0] kernel_12;
+    wire [FP_WORD_LENGTH-1 : 0] kernel_20;
+    wire [FP_WORD_LENGTH-1 : 0] kernel_21;
+    wire [FP_WORD_LENGTH-1 : 0] kernel_22;
+    
+    assign kernel_00 = 11'b10000000001;
+    assign kernel_01 = 11'b00000000000;
+    assign kernel_02 = 11'b00000000001;
+    
+    assign kernel_10 = 11'b10000000010;
+    assign kernel_11 = 11'b00000000000;
+    assign kernel_12 = 11'b00000000010;
+    
+    assign kernel_20 = 11'b10000000001;
+    assign kernel_21 = 11'b00000000000;
+    assign kernel_22 = 11'b00000000001;
+    
+	// Intermediate wires
+	wire [FP_WORD_LENGTH-1:0] wire_00; wire [FP_WORD_LENGTH-1:0] wire_01; wire [FP_WORD_LENGTH-1:0] wire_02;
+    wire [FP_WORD_LENGTH-1:0] wire_10; wire [FP_WORD_LENGTH-1:0] wire_11; wire [FP_WORD_LENGTH-1:0] wire_12;
+    wire [FP_WORD_LENGTH-1:0] wire_20; wire [FP_WORD_LENGTH-1:0] wire_21; wire [FP_WORD_LENGTH-1:0] wire_22;
+
+    // For line buffer
+    wire [7:0] reg_00; wire [7:0] reg_01; wire [7:0] reg_02;
+    wire [7:0] reg_10; wire [7:0] reg_11; wire [7:0] reg_12;
+    wire [7:0] reg_20; wire [7:0] reg_21; wire [7:0] reg_22; 
+	
+	reg [9:0] irow;
+    reg [9:0] icol0;
+    reg [9:0] icol1;
+        
+	reg valid;
+	
+	always @( posedge clk )
+    begin 
+        if( irow<IMAGE_HEIGHT )
+            valid <= valid_in;
+        else 
+            valid <= 1'b1;    
+    end
+    
+	line_buffer #(
+        .IMAGE_WIDTH(IMAGE_WIDTH),
+        .KERNEL_SIZE(KERNEL_SIZE)
+    ) lb_unit(
+        .clk                (clk),
+        .reset            	(reset),
+        .valid              (valid),
+        .pxl_in             (pxl_in),
+                
+        .reg_00             (reg_00), 
+        .reg_01             (reg_01), 
+        .reg_02             (reg_02),
+                          
+        .reg_10             (reg_10), 
+        .reg_11             (reg_11), 
+        .reg_12             (reg_12), 
+                    
+        .reg_20             (reg_20), 
+        .reg_21             (reg_21), 
+        .reg_22             (reg_22)
+    );
+    
+	//Row : 1
+	mac mac_00(clk, valid, reg_00, kernel_00, 0, 	   wire_00);
+	mac mac_01(clk, valid, reg_01, kernel_01, wire_00, wire_01);
+	mac mac_02(clk, valid, reg_02, kernel_02, wire_01, wire_02);
+    
+	//Row: 2
+	mac mac_10(clk, valid, reg_10, kernel_10, wire_02, wire_10); 
+	mac mac_11(clk, valid, reg_11, kernel_11, wire_10, wire_11);
+    mac mac_12(clk, valid, reg_12, kernel_12, wire_11, wire_12); 
+  
+	//Row: 3
+	mac mac_20(clk, valid, reg_20, kernel_20, wire_12, wire_20);
+	mac mac_21(clk, valid, reg_21, kernel_21, wire_20, wire_21); 
+	mac mac_22(clk, valid, reg_22, kernel_22, wire_21, wire_22); 
+	
+    reg [7:0] temp;
+	always @( posedge clk ) 
+	begin 
+		temp <= wire_22[FP_WORD_LENGTH-1] ? 8'd0 : (wire_22[FP_WORD_LENGTH-2:FP_FRAC_LENGTH+7+1] ? 8'd255 : wire_22[FP_FRAC_LENGTH+7:FP_FRAC_LENGTH]);        
+    end
+	assign pxl_out = {3{temp}};
+		
+    always @( posedge clk )
+    begin
+        if( reset ) begin 
+			irow <= 10'd0;
+			icol0 <= 10'd0;
+		end
+		else if( irow==IMAGE_HEIGHT && icol0==8+1 ) begin 
+			irow <= 10'd0;
+			icol0 <= 10'd0;
+		end
+		else if( irow==IMAGE_HEIGHT-1 && icol0==IMAGE_WIDTH-1 ) begin
+            irow <= irow + 1;
+            icol0 <= 10'd0;
+        end
+		else if( valid ) begin 
+            icol0 <= icol0 + 1;
+			if( icol0==IMAGE_WIDTH-1 ) begin
+                irow <= irow + 1;
+				icol0 <= 10'd0;
+			end
+		end 
+    end
+	
+	reg ready_in_reg;
+	always @( posedge clk )
+	begin
+	   if( reset )
+	       ready_in_reg <= 1'b0;
+	   else if( (irow==IMAGE_HEIGHT) || ( irow==IMAGE_HEIGHT-1 && icol0==IMAGE_WIDTH-1) )
+	       ready_in_reg <= 1'b0;
+	   else
+	       ready_in_reg <= 1'b1;
+	end
+	assign ready_in = ready_in_reg;
+	
+	always @( posedge clk )
+	begin 
+		if( reset ) 
+			icol1 <= 10'd0;
+		else 
+			icol1 <= icol0;
+	end 
+	
+	reg valid_out_reg;
+	always @( posedge clk )
+	begin 
+		if( icol0 != icol1 ) begin 
+			if( irow>KERNEL_SIZE-1-1 && irow<IMAGE_HEIGHT ) begin
+				if ( icol0>KERNEL_SIZE+8 )
+					valid_out_reg <= 1'b1;
+				else if ( irow>KERNEL_SIZE-1 && icol0<8+1+1 )
+					valid_out_reg <= 1'b1;
+				else
+					valid_out_reg <= 1'b0;
+			end 
+			else if( irow==IMAGE_HEIGHT ) begin 
+			    if ( icol0<8+1+1 )
+					valid_out_reg <= 1'b1;
+				else
+					valid_out_reg <= 1'b0; 
+			end
+			else 
+				valid_out_reg <= 1'b0;
+		end
+		else 
+			valid_out_reg <= 1'b0;
+	end
+    assign valid_out = valid_out_reg;
+    
+    reg eop_out_reg;
+    always @( posedge clk )
+    begin
+		if( icol0 != icol1 ) begin 
+			if( irow==IMAGE_HEIGHT && icol0==8+1 ) 
+				eop_out_reg <= 1'b1;
+			else 
+				eop_out_reg <= 1'b0; 
+		end
+		else 
+		  eop_out_reg <= 1'b0;
+    end
+    assign eop_out = eop_out_reg;
+    
+	reg sop_out_reg;
+    always @( posedge clk )
+    begin
+		if( icol0 != icol1 ) begin 
+			if( irow==KERNEL_SIZE-1 && icol0==KERNEL_SIZE+8+1 )
+				sop_out_reg <= 1'b1;
+			else 
+				sop_out_reg <= 1'b0;
+		end
+		else 
+		  sop_out_reg <= 1'b0;
+    end
+    assign sop_out = sop_out_reg;
+	
+endmodule
