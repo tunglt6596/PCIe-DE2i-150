@@ -11,7 +11,7 @@
 
 ### Prerequisites
 
-* I use Ubuntu 14.04 for DE2i-150. Kernel version is 4.4.0. You can check with this command:
+* I use Ubuntu 14.04 for DE2i-150. Kernel version is 4.4.0. You can check your kernel version with this command:
 
 ```
 $ uname -r
