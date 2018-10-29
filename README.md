@@ -96,7 +96,7 @@ https://www.youtube.com/watch?v=viAXmyh9PdA
 ```
 https://www.youtube.com/watch?v=bKAL7i8swpI
 ```
-
+* Document: folder doc/ contains my report for this project, but only Vietnamese version.
 ## Versioning
 
 * 1.0
