@@ -83,7 +83,7 @@ $ sudo ./app
 
 ## Deployment
 
-* Some videos demo:
+* Some demo videos:
 
 ```
 https://www.youtube.com/watch?v=xrvb_FH-_Zc
