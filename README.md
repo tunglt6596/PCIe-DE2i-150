@@ -1,7 +1,7 @@
 # Embedded System Project - IT4797 - SoICT - HUST
 
 * Study to use PCIe IP Core, SG-DMA IP Core,... with Intel FPGA.
-* Write an IP Core to implement convolution operator by kernel 3x3 and input image 640x480, compatible with Avalon Video Streaming Interface.  
+* Write an IP Core to implement convolution operator by kernel 3x3 and input image 640x480, fixed-point number, compatible with Avalon Video Streaming Interface.  
 * Display video via VGA, run demo with Gaussian, Sobel, Prewitt, Mean filter.
 
 ## Getting Started
