@@ -97,6 +97,9 @@ https://www.youtube.com/watch?v=viAXmyh9PdA
 https://www.youtube.com/watch?v=bKAL7i8swpI
 ```
 * Document: folder Doc/ contains my report for this project, but only Vietnamese version.
+
+* Project page: http://dce.hust.edu.vn/httpsgithub-comtunglt6596pcie-de2i-150/
+
 ## Versioning
 
 * 1.0
