@@ -66,7 +66,7 @@ $ sudo chmod 777 /dev/de2i150_altera
 $ cd app
 $ sudo ./app
 ```
-* Connect screen to VGA FPGA port, you'll see the results.
+* Connect screen to FPGA VGA port, you'll see the results.
  
 ## Running the tests
 
