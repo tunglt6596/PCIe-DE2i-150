@@ -111,7 +111,7 @@ https://www.youtube.com/watch?v=bKAL7i8swpI
 
 ## Authors
 
-* Student Thanh Tung Le and lecturer Duc Tien Nguyen. 
+* Student Tung Thanh Le and lecturer Tien Duc Nguyen. 
 
 ## License
 
