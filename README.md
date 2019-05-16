@@ -28,6 +28,11 @@ $ uname -r
 ```
 GRUB_CMDLINE_LINUX="vmalloc=512MB intel_iommu=off"
 ``` 
+* Then update grub:
+
+```
+sudo update-grub
+```
 
 * If you're using another kernel version, maybe you need to modify device driver. To build device devicer:
 
