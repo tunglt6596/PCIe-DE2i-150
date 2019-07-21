@@ -17,7 +17,7 @@
 $ uname -r
 ``` 
 
-* Please add this two options into grub booting commands:
+* Please add this two options into grub booting commands then update grub:
 
 ```
 /etc/grub.conf: vmalloc=512MB intel_iommu=off
